@@ -1,0 +1,77 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model JenisSurat {
+  id     Int     @id @default(autoincrement())
+  nama   String  @db.VarChar(100)
+  surats Surat[]
+}
+
+model SifatSurat {
+  id     Int     @id @default(autoincrement())
+  nama   String  @db.VarChar(100)
+  surats Surat[]
+}
+
+model StatusSurat {
+  id          Int          @id @default(autoincrement())
+  nama        String       @db.VarChar(100)
+  suratmasuks SuratMasuk[]
+}
+
+model User {
+  id           Int           @id @default(autoincrement())
+  name         String        @db.VarChar(255)
+  email        String        @unique
+  username     String        @unique
+  password     String
+  suratkeluars SuratKeluar[]
+  suratmasuks  SuratMasuk[]
+}
+
+model Surat {
+  id           Int           @id @default(autoincrement())
+  nosurat      String        @db.VarChar(255)
+  perihal      String        @db.VarChar(255)
+  nama         String        @db.VarChar(255)
+  alamat       String        @db.VarChar(255)
+  pengirim     String        @db.VarChar(255)
+  file         String        @db.VarChar(255)
+  tglbuat      DateTime      @db.Date
+  jenis        JenisSurat    @relation(fields: [jenisId], references: [id], onDelete: Cascade)
+  jenisId      Int
+  sifat        SifatSurat    @relation(fields: [sifatId], references: [id], onDelete: Cascade)
+  sifatId      Int
+  suratkeluars SuratKeluar[]
+  suratmasuks  SuratMasuk[]
+}
+
+model SuratKeluar {
+  id        Int      @id @default(autoincrement())
+  tujuan    String   @db.VarChar(255)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  surat     Surat    @relation(fields: [suratId], references: [id], onDelete: Cascade)
+  suratId   Int
+  tglkeluar DateTime @db.Date
+}
+
+model SuratMasuk {
+  id        Int         @id @default(autoincrement())
+  tglterima DateTime    @db.Date
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  surat     Surat       @relation(fields: [suratId], references: [id], onDelete: Cascade)
+  suratId   Int
+  status    StatusSurat @relation(fields: [statusId], references: [id], onDelete: Cascade)
+  statusId  Int
+}

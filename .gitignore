@@ -12,6 +12,10 @@
 /.next/
 /out/
 
+# databases
+/prisma/migrations
+db_surat.sql
+
 # production
 /build
 
