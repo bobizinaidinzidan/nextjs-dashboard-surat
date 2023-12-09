@@ -218,7 +218,7 @@ export default function BarChart({ suratMasuk, suratKeluar }) {
         legend: { position: 'bottom' },
         title: {
           display: true,
-          text: 'Data Keseluruhan Surat',
+          text: 'Data Keseluruhan Surat Tahun 2023',
         },
         // footer: {
         //   footerColor: '#fff',
